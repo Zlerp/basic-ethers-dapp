@@ -74,12 +74,13 @@ const App = () => {
           <button onClick={disconnectWallet}>Disconnect Wallet</button>
         </div>
       )}
+      <hr />
 
       {provider && <button onClick={doSomeRead}>Do some read</button>}
       {doSomeReadResponse && <p>{doSomeReadResponse}</p>}
-
+      <hr />
       {account && <button onClick={doSomeWrite}>Do some write</button>}
-      {doSomeWriteResponse && <p>{doSomeWriteResponse}</p>}
+      {account && doSomeWriteResponse && <p>{doSomeWriteResponse}</p>}
     </div>
   );
 };
