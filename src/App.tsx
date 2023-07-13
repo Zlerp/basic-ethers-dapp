@@ -20,6 +20,8 @@ const App = () => {
   const [doSomeWriteResponse, setDoSomeWriteResponse] = useState<string | null>(
     null
   );
+  const [isInjected, setIsInjected] = useState(false);
+
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
       setProvider(new ethers.providers.Web3Provider(window.ethereum));
@@ -49,6 +51,12 @@ const App = () => {
     }
   }, [provider]);
 
+  useEffect(() => {
+    if (window.ethereum) {
+      setIsInjected(true);
+    }
+  }, []);
+
   const doSomeRead = async () => {
     if (!contract) return;
     const result = await contract.name();
@@ -67,21 +75,27 @@ const App = () => {
 
   return (
     <div>
-      {!account && <button onClick={connectWallet}>Connect Wallet</button>}
-      {account && (
+      {isInjected ? (
         <div>
-          <p>Connected Account: {account}</p>
-          <button onClick={disconnectWallet}>Disconnect Wallet</button>
+          {!account && <button onClick={connectWallet}>Connect Wallet</button>}
+          {account && (
+            <div>
+              <p>Connected Account: {account}</p>
+              <button onClick={disconnectWallet}>Disconnect Wallet</button>
+            </div>
+          )}
+          <hr />
+          {contract && <p>Contract Address: {contract.address}</p>}
+          <hr />
+          {provider && <button onClick={doSomeRead}>Do some read</button>}
+          {doSomeReadResponse && <p>{doSomeReadResponse}</p>}
+          <hr />
+          {account && <button onClick={doSomeWrite}>Do some write</button>}
+          {account && doSomeWriteResponse && <p>{doSomeWriteResponse}</p>}
         </div>
+      ) : (
+        <p>Install Metamask</p>
       )}
-      <hr />
-      {contract && <p>Contract Address: {contract.address}</p>}
-      <hr />
-      {provider && <button onClick={doSomeRead}>Do some read</button>}
-      {doSomeReadResponse && <p>{doSomeReadResponse}</p>}
-      <hr />
-      {account && <button onClick={doSomeWrite}>Do some write</button>}
-      {account && doSomeWriteResponse && <p>{doSomeWriteResponse}</p>}
     </div>
   );
 };
