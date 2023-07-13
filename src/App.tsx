@@ -75,7 +75,8 @@ const App = () => {
         </div>
       )}
       <hr />
-
+      {contract && <p>Contract Address: {contract.address}</p>}
+      <hr />
       {provider && <button onClick={doSomeRead}>Do some read</button>}
       {doSomeReadResponse && <p>{doSomeReadResponse}</p>}
       <hr />
