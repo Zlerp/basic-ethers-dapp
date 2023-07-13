@@ -20,7 +20,6 @@ const App = () => {
   const [doSomeWriteResponse, setDoSomeWriteResponse] = useState<string | null>(
     null
   );
-  const [isInjected, setIsInjected] = useState(false);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -51,12 +50,6 @@ const App = () => {
     }
   }, [provider]);
 
-  useEffect(() => {
-    if (window.ethereum) {
-      setIsInjected(true);
-    }
-  }, []);
-
   const doSomeRead = async () => {
     if (!contract) return;
     const result = await contract.name();
@@ -75,7 +68,7 @@ const App = () => {
 
   return (
     <div>
-      {isInjected ? (
+      {provider ? (
         <div>
           {!account && <button onClick={connectWallet}>Connect Wallet</button>}
           {account && (
